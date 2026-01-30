@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Televia - My Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Maven Control';
+            font-style: normal;
+            font-weight: 200;
+            font-display: swap;
+            src: url('https://fonts.cdnfonts.com/s/21749/Maven%20Control%20Light.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'Maven Control';
+            font-style: normal;
+            font-weight: 800;
+            font-display: swap;
+            src: url('https://fonts.cdnfonts.com/s/21749/Maven%20Control%20Extrabold.woff') format('woff');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Maven Control', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 200;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+        }
+
+        .top-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-img {
+            height: 18px;
+            width: auto;
+        }
+
+        .user-selector {
+            position: relative;
+        }
+
+        .current-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background 0.2s;
+            color: #e3e2dd;
+            font-size: 11px;
+        }
+
+        .current-user:hover {
+            background: rgba(227, 226, 221, 0.1);
+        }
+
+        .user-icon {
+            width: 28px;
+            height: 28px;
+            background: #14b8a6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: white;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            min-width: 250px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-user {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 200;
+        }
+
+        .dropdown-user:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-user:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-user:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 60vh;
+            background: url('televia-background.jpg') center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.6) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-family: 'Inclusive Sans', sans-serif;
+            font-size: clamp(40px, 6vw, 60px);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: #e3e2dd;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e3e2dd;
+            opacity: 0.95;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 15px 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .search-bar:hover {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            color: #333;
+            background: transparent;
+            font-family: 'Maven Control', sans-serif;
+            font-weight: 200;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        .search-icon {
+            color: #666;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* Data Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 2px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-left: 4px solid #1a1a1a;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: 200;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .card-detail {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 200;
+        }
+
+        .card-detail strong {
+            color: #1a1a1a;
+            font-weight: 800;
+        }
+
+        .card-highlight {
+            color: #14b8a6;
+            font-weight: 200;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #14b8a6 0%, #3b82f6 100%);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        /* Get Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(140, 150, 160, 0.95);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .help-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(120, 130, 140, 0.95);
+        }
+
+        .help-icon {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #666;
+        }
+
+        .help-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 15px 20px;
+            }
+
+            .hero-section {
+                padding: 80px 20px 40px;
+                min-height: 50vh;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 30px 20px 80px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .help-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 18px;
+            }
+
+            .help-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+            }
+
+            .help-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="top-nav-container">
+            <img src="televia-logo.svg" alt="Televia" class="logo-img">
+            <div class="user-selector">
+                <div class="current-user" onclick="toggleUserDropdown()">
+                    <span>Welcome, <span id="currentUserName">Jonathan</span></span>
+                    <div class="user-icon">J</div>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="dropdown-user" onclick="switchUser('Jonathan', 'J')">
+                        <div class="user-icon">J</div>
+                        <div>
+                            <div style="font-weight: 800;">Jonathan</div>
+                            <div style="font-size: 12px; color: #666;">+1 617 555 0001</div>
+                        </div>
+                    </div>
+                    <div class="dropdown-user" onclick="switchUser('Sarah', 'S')">
+                        <div class="user-icon" style="background: #ec4899;">S</div>
+                        <div>
+                            <div style="font-weight: 800;">Sarah</div>
+                            <div style="font-size: 12px; color: #666;">+1 617 555 0002</div>
+                        </div>
+                    </div>
+                    <div class="dropdown-user" onclick="switchUser('Michael', 'M')">
+                        <div class="user-icon" style="background: #8b5cf6;">M</div>
+                        <div>
+                            <div style="font-weight: 800;">Michael</div>
+                            <div style="font-size: 12px; color: #666;">+1 617 555 0003</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Search -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Fast and Dependable Networks</h1>
+            <p>Get access to premium coverage wherever you are, on whatever device you have, and pay only for what you use.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for help with plans, devices, network coverage...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Data Cards -->
+        <div class="cards-grid">
+            <!-- Current Plan Card -->
+            <div class="card">
+                <div class="card-header">Current Plan</div>
+                <div class="card-value">Go5G Essentials</div>
+                <div class="card-detail"><strong>$90</strong>/month</div>
+                <div class="card-detail">3 phone lines</div>
+                <div class="card-detail card-highlight">100MB per month</div>
+            </div>
+
+            <!-- Data Usage Card -->
+            <div class="card">
+                <div class="card-header">Data Usage</div>
+                <div class="card-value">98%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+                </div>
+                <div class="card-detail">of your data plan used</div>
+            </div>
+
+            <!-- Account Information Card -->
+            <div class="card">
+                <div class="card-header">Account Information</div>
+                <div class="card-detail">
+                    <strong>Member Since:</strong> November 2024
+                </div>
+                <div class="card-detail" style="margin-top: 10px;">
+                    <strong>Phone:</strong> <span id="phoneNumber">+1 617 555 0001</span>
+                </div>
+            </div>
+
+            <!-- Location Card -->
+            <div class="card">
+                <div class="card-header">Location</div>
+                <div class="card-value">New York</div>
+                <div class="card-detail">NY, USA</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Help Button -->
+    <div class="help-button" onclick="alert('Chat widget would open here')">
+        <div class="help-icon">?</div>
+        <div class="help-text">Get Help</div>
+    </div>
+
+    <script>
+        // Animate progress bar on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width = '98%';
+            }, 300);
+        });
+
+        // Toggle user dropdown
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const userSelector = document.querySelector('.user-selector');
+            const dropdown = document.getElementById('userDropdown');
+            if (!userSelector.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Switch user
+        const users = {
+            'Jonathan': { phone: '+1 617 555 0001', initial: 'J', color: '#14b8a6' },
+            'Sarah': { phone: '+1 617 555 0002', initial: 'S', color: '#ec4899' },
+            'Michael': { phone: '+1 617 555 0003', initial: 'M', color: '#8b5cf6' }
+        };
+
+        function switchUser(name, initial) {
+            const user = users[name];
+
+            // Update current user display
+            document.getElementById('currentUserName').textContent = name;
+            const userIcon = document.querySelector('.current-user .user-icon');
+            userIcon.textContent = initial;
+            userIcon.style.background = user.color;
+
+            // Update phone number
+            document.getElementById('phoneNumber').textContent = user.phone;
+
+            // Close dropdown
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

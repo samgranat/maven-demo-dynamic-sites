@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventra - My Bookings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            background: #a598b6;
+        }
+
+        .top-nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-img {
+            height: 16px;
+            width: auto;
+        }
+
+        .user-selector {
+            position: relative;
+        }
+
+        .current-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background 0.2s;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .current-user:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            min-width: 250px;
+            display: none;
+            z-index: 1000;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-user {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 400;
+        }
+
+        .dropdown-user:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-user:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-user:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 60vh;
+            background: url('aventra-background.jpg') center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+            margin-top: 60px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(165, 152, 182, 0.8) 0%, rgba(165, 152, 182, 0.5) 50%, rgba(165, 152, 182, 0.7) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-content h1 {
+            font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-size: clamp(40px, 6vw, 60px);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 0;
+            color: #ffffff;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 15px 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .search-bar:hover {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            color: #333;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 400;
+        }
+
+        .search-bar input::placeholder {
+            color: #999;
+        }
+
+        .search-icon {
+            color: #666;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* Data Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 2px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-left: 4px solid #a598b6;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .card-detail {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .card-detail strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .card-highlight {
+            color: #a598b6;
+            font-weight: 400;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-ontime {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-delayed {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Get Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(140, 150, 160, 0.95);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .help-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(120, 130, 140, 0.95);
+        }
+
+        .help-icon {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #666;
+        }
+
+        .help-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 15px 20px;
+            }
+
+            .hero-section {
+                padding: 80px 20px 40px;
+                min-height: 50vh;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 30px 20px 80px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .help-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 18px;
+            }
+
+            .help-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+            }
+
+            .help-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="top-nav-container">
+            <img src="aventra.svg" alt="Aventra" class="logo-img">
+            <div class="user-selector">
+                <div class="current-user" onclick="toggleUserDropdown()">
+                    <span>Welcome, <span id="currentUserName">jdoe0</span></span>
+                    <div class="user-icon" id="currentUserIcon">J</div>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <!-- Users will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Search -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Explorers<br/>Wanted</h1>
+            <p>Effortlessly book flights, hotels & transportation with seamless travel made simple. Explore our seasonal deals and exclusive offers.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for flights, bookings, baggage, upgrades...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Data Cards -->
+        <div class="cards-grid">
+            <!-- Current Flight Card -->
+            <div class="card">
+                <div class="card-header">Current Flight</div>
+                <div class="card-value" id="flightNumber">AD35</div>
+                <div class="card-detail" id="flightRoute"><strong>Munich</strong> → <strong>London</strong></div>
+                <div class="card-detail" id="departureTime">Departure: <strong>02:05</strong></div>
+                <span class="status-badge status-cancelled" id="flightStatus">Cancelled</span>
+            </div>
+
+            <!-- Seat Class Card -->
+            <div class="card">
+                <div class="card-header">Seat Class</div>
+                <div class="card-value" id="seatType">Business Class</div>
+                <div class="card-detail" id="seatFeature1">Full flat-bed seat</div>
+                <div class="card-detail card-highlight" id="seatFeature2">Lounge access included</div>
+            </div>
+
+            <!-- Loyalty Status Card -->
+            <div class="card">
+                <div class="card-header">Loyalty Status</div>
+                <div class="card-value">Aventra Elite</div>
+                <div class="card-detail" id="memberSince">
+                    <strong>Member Since:</strong> January 2024
+                </div>
+            </div>
+
+            <!-- Next Trip Card -->
+            <div class="card">
+                <div class="card-header">Next Trip</div>
+                <div class="card-value" id="nextDestination">London</div>
+                <div class="card-detail" id="nextDate">Tomorrow</div>
+                <div class="card-detail card-highlight" style="cursor: pointer;">View booking details →</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Help Button -->
+    <div class="help-button" onclick="alert('Chat widget would open here')">
+        <div class="help-icon">?</div>
+        <div class="help-text">Get Help</div>
+    </div>
+
+    <script>
+        // Travel Data
+        const users = {
+            'jdoe0': { flightNumber: 'AD35', seatType: 'Business Class', memberSince: '2024-01-31' },
+            'jdoe1': { flightNumber: 'AD322', seatType: 'Guest Class (Extra Legroom)', memberSince: '2019-11-01' },
+            'jdoe2': { flightNumber: 'AD450', seatType: 'Guest Class (Economy)', memberSince: '2021-09-20' },
+            'jdoe3': { flightNumber: 'AD836', seatType: 'Guest Class (Economy)', memberSince: '2017-04-13' },
+            'jdoe4': { flightNumber: 'AD410', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' },
+            'jdoe5': { flightNumber: 'AD104', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' },
+            'jdoe6': { flightNumber: 'AD330', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' },
+            'jdoe7': { flightNumber: 'AD42', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' },
+            'jdoe8': { flightNumber: 'AD44', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' },
+            'jdoe9': { flightNumber: 'AD206', seatType: 'Guest Class (Economy)', memberSince: '2015-02-11' }
+        };
+
+        const flights = {
+            'AD35': { origin: 'Munich', destination: 'London', time: '02:05', status: 'Cancelled' },
+            'AD322': { origin: 'Munich', destination: 'London', time: '06:30', status: 'On time' },
+            'AD450': { origin: 'Salzburg', destination: 'London', time: '12:45', status: 'On time' },
+            'AD836': { origin: 'Munich', destination: 'Dubai', time: '17:15', status: 'On time' },
+            'AD410': { origin: 'Salzburg', destination: 'Dubai', time: '10:25', status: 'On time' },
+            'AD104': { origin: 'Salzburg', destination: 'Cairo', time: '11:45', status: 'On time' },
+            'AD330': { origin: 'Munich', destination: 'Cairo', time: '15:30', status: 'On time' },
+            'AD42': { origin: 'Salzburg', destination: 'New York', time: '08:20', status: 'Delayed' },
+            'AD44': { origin: 'Munich', destination: 'New York', time: '01:50', status: 'On time' },
+            'AD206': { origin: 'Munich', destination: 'Paris', time: '01:10', status: 'On time' }
+        };
+
+        const seats = {
+            'Business Class': { feature1: 'Full flat-bed seat', feature2: 'Lounge access included' },
+            'Guest Class (Extra Legroom)': { feature1: 'Extra legroom seat', feature2: 'Priority boarding' },
+            'Guest Class (Economy)': { feature1: 'Standard seat', feature2: 'Complimentary meals' }
+        };
+
+        // Generate user colors
+        const colors = ['#a598b6', '#ec4899', '#8b5cf6', '#14b8a6', '#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#6366f1', '#8b5cf6'];
+
+        // Populate user dropdown
+        function populateUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            Object.keys(users).forEach((username, index) => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'dropdown-user';
+                userDiv.onclick = () => switchUser(username);
+
+                const initial = username.charAt(0).toUpperCase();
+                const color = colors[index % colors.length];
+
+                userDiv.innerHTML = `
+                    <div class="user-icon" style="background: ${color};">${initial}</div>
+                    <div>
+                        <div style="font-weight: 800;">${username}</div>
+                        <div style="font-size: 12px; color: #666;">Flight ${users[username].flightNumber}</div>
+                    </div>
+                `;
+                dropdown.appendChild(userDiv);
+            });
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const userSelector = document.querySelector('.user-selector');
+            const dropdown = document.getElementById('userDropdown');
+            if (!userSelector.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Format date
+        function formatMemberSince(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        // Switch user
+        function switchUser(username) {
+            const user = users[username];
+            const flight = flights[user.flightNumber];
+            const seat = seats[user.seatType];
+
+            // Update current user display
+            document.getElementById('currentUserName').textContent = username;
+            const userIcon = document.getElementById('currentUserIcon');
+            userIcon.textContent = username.charAt(0).toUpperCase();
+            const colorIndex = Object.keys(users).indexOf(username);
+            userIcon.style.background = colors[colorIndex % colors.length];
+
+            // Update flight card
+            document.getElementById('flightNumber').textContent = user.flightNumber;
+            document.getElementById('flightRoute').innerHTML = `<strong>${flight.origin}</strong> → <strong>${flight.destination}</strong>`;
+            document.getElementById('departureTime').innerHTML = `Departure: <strong>${flight.time}</strong>`;
+
+            // Update status badge
+            const statusBadge = document.getElementById('flightStatus');
+            statusBadge.textContent = flight.status;
+            statusBadge.className = 'status-badge';
+            if (flight.status === 'On time') {
+                statusBadge.classList.add('status-ontime');
+            } else if (flight.status === 'Delayed') {
+                statusBadge.classList.add('status-delayed');
+            } else if (flight.status === 'Cancelled') {
+                statusBadge.classList.add('status-cancelled');
+            }
+
+            // Update seat card
+            document.getElementById('seatType').textContent = user.seatType;
+            document.getElementById('seatFeature1').textContent = seat.feature1;
+            document.getElementById('seatFeature2').textContent = seat.feature2;
+
+            // Update loyalty card
+            document.getElementById('memberSince').innerHTML = `<strong>Member Since:</strong> ${formatMemberSince(user.memberSince)}`;
+
+            // Update next trip card
+            document.getElementById('nextDestination').textContent = flight.destination;
+            document.getElementById('nextDate').textContent = 'Tomorrow';
+
+            // Close dropdown
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+
+        // Initialize
+        populateUserDropdown();
+        switchUser('jdoe0'); // Load default user
+    </script>
+</body>
+</html>

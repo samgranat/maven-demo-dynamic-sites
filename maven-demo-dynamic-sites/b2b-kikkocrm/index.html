@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KikkoCRM - Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 24px;
+        }
+
+        .logo-stripe {
+            width: 8px;
+            height: 24px;
+            background: #0f5c5c;
+            transform: skewX(-15deg);
+        }
+
+        .logo-stripe:nth-child(2) {
+            background: #156d6d;
+        }
+
+        .logo-stripe:nth-child(3) {
+            background: #1a7e7e;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-items a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-items a:hover {
+            color: #1a1a1a;
+        }
+
+        .nav-right {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem 2rem 2rem;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            opacity: 0.9;
+        }
+
+        .hero-tile {
+            transition: opacity 0.3s;
+        }
+
+        .hero-tile:nth-child(1) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .hero-tile:nth-child(2) { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .hero-tile:nth-child(3) { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .hero-tile:nth-child(4) { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .hero-tile:nth-child(5) { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .hero-tile:nth-child(6) { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .hero-tile:nth-child(7) { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .hero-tile:nth-child(8) { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+        .hero-tile:nth-child(9) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .hero-tile:nth-child(10) { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .hero-tile:nth-child(11) { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        .hero-tile:nth-child(12) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            background: #fff;
+            color: #1a1a1a;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Search Bar */
+        .hero-search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0;
+        }
+
+        .hero-search-input {
+            width: 100%;
+            padding: 14px 55px 14px 20px;
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .hero-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-search-input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .search-icon-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #fff;
+        }
+
+        .search-icon-button:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .search-icon-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .search-hint {
+            display: none;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+        }
+
+        /* Admin Summary */
+        .admin-summary {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-card {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            background: #f8f9fa;
+        }
+
+        .summary-card-label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 0.15rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-card-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .license-usage {
+            margin-top: 0.5rem;
+        }
+
+        .license-progress {
+            margin-top: 0.35rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .license-text {
+            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .callout {
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.85rem;
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .callout p {
+            color: #856404;
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* User Management */
+        .user-management {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .management-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .management-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 10px 16px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            min-width: 250px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .sort-select {
+            padding: 10px 16px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #1a1a1a;
+            border: 1px solid #d0d0d0;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .user-title {
+            color: #666;
+        }
+
+        .user-email {
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+
+        /* Get Help Button */
+        .get-help-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 500;
+        }
+
+        .get-help-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .help-icon {
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        /* Maven Search Modal */
+        .maven-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            overflow: hidden;
+            display: none;
+        }
+
+        .maven-modal.active {
+            display: block;
+        }
+
+        .maven-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .maven-modal-content {
+            position: relative;
+            background: #fff;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            margin: 5vh auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+            contain: layout style paint;
+        }
+
+        .maven-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #e5e5e5;
+            flex-shrink: 0;
+        }
+
+        .maven-modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .maven-modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: #666;
+        }
+
+        .maven-modal-close:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .maven-modal-close svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .maven-modal-search {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .maven-modal-search-input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .maven-modal-search-input:focus {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+        }
+
+        .maven-modal-search-button {
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .maven-modal-search-button:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+
+        .maven-modal-search-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .maven-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            min-height: 300px;
+        }
+
+        .maven-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .maven-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #1a1a1a;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        .maven-loading p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .maven-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .maven-error svg {
+            color: #dc2626;
+            margin-bottom: 16px;
+        }
+
+        .maven-error-message {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .maven-retry-button {
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .maven-retry-button:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #maven-instant-answers-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        #maven-instant-answers-container * {
+            font-family: inherit;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-items {
+                display: none;
+            }
+
+            .hero {
+                padding: 1.25rem 2rem 1.75rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .summary-card {
+                padding: 0.5rem 0.65rem;
+            }
+
+            .summary-card-value {
+                font-size: 1rem;
+            }
+
+            .admin-summary {
+                padding: 0.85rem 1rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .container {
+                padding: 1.25rem 2rem 3rem;
+            }
+
+            .management-controls {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .get-help-button {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 10px 18px;
+                font-size: 0.95rem;
+            }
+
+            .help-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 1rem;
+            }
+
+            .maven-modal-content {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 16px 16px 0 0;
+                max-height: 90vh;
+                position: absolute;
+                bottom: 0;
+            }
+
+            .maven-modal-search {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .maven-modal-search-button {
+                width: 100%;
+            }
+
+            .hero-search-input {
+                font-size: 1rem;
+                padding: 16px 55px 16px 20px;
+            }
+
+            .search-icon-button {
+                width: 40px;
+                height: 40px;
+            }
+
+            .search-hint {
+                font-size: 0.9rem;
+            }
+
+            .table-wrapper {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .summary-card {
+                padding: 0.4rem 0.6rem;
+            }
+
+            .summary-card-label {
+                font-size: 0.65rem;
+            }
+
+            .summary-card-value {
+                font-size: 1rem;
+            }
+
+            .admin-summary {
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .container {
+                padding: 1rem 1rem 2rem;
+            }
+
+            .license-text {
+                font-size: 0.75rem;
+            }
+
+            .callout p {
+                font-size: 0.8rem;
+            }
+
+            .hero {
+                padding: 1rem 1rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-search-input {
+                font-size: 0.95rem;
+                padding: 12px 48px 12px 18px;
+            }
+
+            .search-icon-button {
+                width: 34px;
+                height: 34px;
+            }
+
+            .search-icon-button svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <div class="logo-stripe"></div>
+                        <div class="logo-stripe"></div>
+                        <div class="logo-stripe"></div>
+                    </div>
+                    <span>KikkoCRM</span>
+                </div>
+                <ul class="nav-items">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Contacts</a></li>
+                    <li><a href="#">Reports</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                Welcome, Jonathan
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+            <div class="hero-tile"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Team Management</h1>
+            <p class="hero-subtitle">Manage your team members, licenses, and user permissions.</p>
+            <div class="hero-search-container">
+                <input
+                    type="text"
+                    id="kikko-search-input"
+                    class="hero-search-input"
+                    placeholder="Search knowledge base..."
+                    aria-label="Search KikkoCRM knowledge base"
+                />
+                <button class="search-icon-button" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </button>
+            </div>
+            <p class="search-hint">Press Enter or click to search our knowledge base</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Admin Summary -->
+        <section class="admin-summary">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="summary-card-label">Username</div>
+                    <div class="summary-card-value" id="summary-username">user0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Role</div>
+                    <div class="summary-card-value" id="summary-role">ADMIN</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Subscription</div>
+                    <div class="summary-card-value" id="summary-subscription">STARTER</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Licenses</div>
+                    <div class="summary-card-value">
+                        <span id="licenses-used">11</span> / <span id="licenses-total">11</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="license-usage">
+                <div class="license-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="license-text" id="license-text">
+                        11 of 11 licenses used (100%)
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout" id="license-callout">
+                <p>You're close to using all available licenses. Want a breakdown of who's using them?</p>
+            </div>
+        </section>
+
+        <!-- User Management -->
+        <section class="user-management">
+            <div class="management-header">
+                <h2 class="management-title">User Management</h2>
+                <div class="management-controls">
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="search-input"
+                        placeholder="Search users by name, email, or title..."
+                    />
+                    <select class="sort-select" id="sort-select">
+                        <option value="name-asc">Name A-Z</option>
+                        <option value="name-desc">Name Z-A</option>
+                        <option value="title">Job Title</option>
+                        <option value="role">Role</option>
+                    </select>
+                    <button class="btn btn-primary" id="add-user-btn">Add User</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Job Title</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <!-- Users will be rendered here -->
+                    </tbody>
+                </table>
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">🔍</div>
+                    <p>No users found.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New User</h2>
+                <p class="modal-subtitle">Enter the details for the new user</p>
+            </div>
+            <div class="modal-body">
+                <div id="add-user-alert" class="alert alert-warning" style="display: none;">
+                    No available licenses. Remove a user or upgrade your plan.
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="add-name">Name</label>
+                    <input type="text" class="form-input" id="add-name" placeholder="John Doe" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="add-title">Job Title</label>
+                    <input type="text" class="form-input" id="add-title" placeholder="Software Engineer" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="add-email">Email</label>
+                    <input type="email" class="form-input" id="add-email" placeholder="john.doe@example.com" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="add-cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="add-save-btn">Add User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove User Modal -->
+    <div id="remove-user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Remove User</h2>
+                <p class="modal-subtitle">Are you sure you want to remove this user?</p>
+            </div>
+            <div class="modal-body">
+                <p id="remove-user-text" style="margin-bottom: 1rem;">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="remove-cancel-btn">Cancel</button>
+                <button class="btn btn-danger" id="remove-confirm-btn">Remove User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Help Button -->
+    <button class="get-help-button" id="get-help-btn">
+        <span class="help-icon">?</span>
+        <span>Get Help</span>
+    </button>
+
+    <!-- Maven Search Modal -->
+    <div id="maven-modal" class="maven-modal">
+        <div class="maven-modal-overlay"></div>
+        <div class="maven-modal-content">
+            <!-- Modal Header -->
+            <div class="maven-modal-header">
+                <h2 id="maven-modal-title">Search KikkoCRM Knowledge Base</h2>
+                <button class="maven-modal-close" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Search Bar -->
+            <div class="maven-modal-search">
+                <input
+                    type="text"
+                    id="maven-modal-search-input"
+                    class="maven-modal-search-input"
+                    placeholder="What can we help you with?"
+                    aria-label="Search query"
+                />
+                <button class="maven-modal-search-button" aria-label="Perform search">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="maven-modal-body">
+                <!-- Loading State -->
+                <div id="maven-loading" class="maven-loading" style="display: none;">
+                    <div class="maven-spinner"></div>
+                    <p>Searching knowledge base...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="maven-error" class="maven-error" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="48" height="48">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <p class="maven-error-message">Unable to search at this time. Please try again.</p>
+                    <button class="maven-retry-button">Retry</button>
+                </div>
+
+                <!-- Results Container -->
+                <div id="maven-instant-answers-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State Management
+        const state = {
+            account: {
+                username: 'user0',
+                role: 'ADMIN',
+                subscription: 'STARTER',
+                licensesTotal: 11
+            },
+            users: [
+                { name: 'Jonathan Corbin', title: 'Admin', email: 'jonathan.corbin@magi-demo.mavenagi.com' },
+                { name: 'Mara Ellington', title: 'Director of Operations', email: 'mara.ellington@televia.com' },
+                { name: 'Julian Cross', title: 'Senior Product Manager', email: 'julian.cross@televia.com' },
+                { name: 'Tara Winslow', title: 'Customer Support Lead', email: 'tara.winslow@televia.com' },
+                { name: 'Evan Calder', title: 'Sales Engineer', email: 'evan.calder@televia.com' },
+                { name: 'Sophie Marlowe', title: 'Marketing Strategist', email: 'sophie.marlowe@televia.com' },
+                { name: 'Darius Kent', title: 'Finance Analyst', email: 'darius.kent@televia.com' },
+                { name: 'Isla Navarro', title: 'UX Researcher', email: 'isla.navarro@televia.com' },
+                { name: 'Colin Brackett', title: 'Business Development Manager', email: 'colin.brackett@televia.com' },
+                { name: 'Nina Halstrom', title: 'Talent Acquisition Partner', email: 'nina.halstrom@televia.com' },
+                { name: 'Riley Donovan', title: 'IT Systems Specialist', email: 'riley.donovan@televia.com' }
+            ],
+            filteredUsers: [],
+            currentSort: 'name-asc',
+            removeUserIndex: null
+        };
+
+        // Initialize
+        state.filteredUsers = [...state.users];
+        renderUsers();
+        updateLicenseInfo();
+
+        // Initialize Maven modal when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeMavenModal);
+        } else {
+            initializeMavenModal();
+        }
+
+        // Render users table
+        function renderUsers() {
+            const tbody = document.getElementById('users-tbody');
+            const emptyState = document.getElementById('empty-state');
+            const table = document.getElementById('users-table');
+
+            if (state.filteredUsers.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = state.filteredUsers.map((user, index) => `
+                <tr>
+                    <td class="user-name">${user.name}</td>
+                    <td class="user-title">${user.title}</td>
+                    <td class="user-email">${user.email}</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary btn-small" onclick="viewUser(${index})">View</button>
+                            <button class="btn btn-danger btn-small" onclick="openRemoveModal(${index})">Remove</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update license info
+        function updateLicenseInfo() {
+            const used = state.users.length;
+            const total = state.account.licensesTotal;
+            const percentage = Math.round((used / total) * 100);
+
+            document.getElementById('licenses-used').textContent = used;
+            document.getElementById('licenses-total').textContent = total;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('license-text').textContent =
+                `${used} of ${total} licenses used (${percentage}%)`;
+
+            const callout = document.getElementById('license-callout');
+            if (used >= total) {
+                callout.style.display = 'block';
+            } else {
+                callout.style.display = 'none';
+            }
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            state.filteredUsers = state.users.filter(user =>
+                user.name.toLowerCase().includes(query) ||
+                user.email.toLowerCase().includes(query) ||
+                user.title.toLowerCase().includes(query)
+            );
+            sortUsers();
+            renderUsers();
+        });
+
+        // Sort functionality
+        document.getElementById('sort-select').addEventListener('change', (e) => {
+            state.currentSort = e.target.value;
+            sortUsers();
+            renderUsers();
+        });
+
+        function sortUsers() {
+            switch (state.currentSort) {
+                case 'name-asc':
+                    state.filteredUsers.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'name-desc':
+                    state.filteredUsers.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                case 'title':
+                    state.filteredUsers.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'role':
+                    state.filteredUsers.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+            }
+        }
+
+        // View user (placeholder)
+        function viewUser(index) {
+            const user = state.filteredUsers[index];
+            alert(`Viewing user: ${user.name}\n${user.title}\n${user.email}`);
+        }
+
+        // Add user modal
+        document.getElementById('add-user-btn').addEventListener('click', () => {
+            const modal = document.getElementById('add-user-modal');
+            const alert = document.getElementById('add-user-alert');
+            const saveBtn = document.getElementById('add-save-btn');
+
+            if (state.users.length >= state.account.licensesTotal) {
+                alert.style.display = 'block';
+                saveBtn.disabled = true;
+            } else {
+                alert.style.display = 'none';
+                saveBtn.disabled = false;
+            }
+
+            // Clear inputs
+            document.getElementById('add-name').value = '';
+            document.getElementById('add-title').value = '';
+            document.getElementById('add-email').value = '';
+
+            modal.classList.add('active');
+        });
+
+        document.getElementById('add-cancel-btn').addEventListener('click', () => {
+            document.getElementById('add-user-modal').classList.remove('active');
+        });
+
+        document.getElementById('add-save-btn').addEventListener('click', () => {
+            const name = document.getElementById('add-name').value.trim();
+            const title = document.getElementById('add-title').value.trim();
+            const email = document.getElementById('add-email').value.trim();
+
+            if (!name || !title || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (state.users.length >= state.account.licensesTotal) {
+                alert('No available licenses');
+                return;
+            }
+
+            // Add user
+            state.users.push({ name, title, email });
+            state.filteredUsers = [...state.users];
+            sortUsers();
+            renderUsers();
+            updateLicenseInfo();
+
+            // Close modal
+            document.getElementById('add-user-modal').classList.remove('active');
+        });
+
+        // Remove user modal
+        function openRemoveModal(index) {
+            const actualIndex = state.users.findIndex(u =>
+                u.name === state.filteredUsers[index].name &&
+                u.email === state.filteredUsers[index].email
+            );
+            state.removeUserIndex = actualIndex;
+
+            const user = state.users[actualIndex];
+            document.getElementById('remove-user-text').textContent =
+                `Are you sure you want to remove ${user.name}? This action cannot be undone.`;
+
+            document.getElementById('remove-user-modal').classList.add('active');
+        }
+
+        document.getElementById('remove-cancel-btn').addEventListener('click', () => {
+            document.getElementById('remove-user-modal').classList.remove('active');
+            state.removeUserIndex = null;
+        });
+
+        document.getElementById('remove-confirm-btn').addEventListener('click', () => {
+            if (state.removeUserIndex !== null) {
+                state.users.splice(state.removeUserIndex, 1);
+                state.filteredUsers = [...state.users];
+
+                // Re-apply search filter
+                const query = document.getElementById('search-input').value.toLowerCase();
+                if (query) {
+                    state.filteredUsers = state.users.filter(user =>
+                        user.name.toLowerCase().includes(query) ||
+                        user.email.toLowerCase().includes(query) ||
+                        user.title.toLowerCase().includes(query)
+                    );
+                }
+
+                sortUsers();
+                renderUsers();
+                updateLicenseInfo();
+            }
+
+            document.getElementById('remove-user-modal').classList.remove('active');
+            state.removeUserIndex = null;
+        });
+
+        // ===== Maven AGI Integration =====
+
+        // Maven Configuration
+        const MAVEN_CONFIG = {
+            organizationId: 'mavenagi-demo',
+            agentId: 'b2b-crm',
+            showPoweredBy: true,
+            tag: 'kikkocrm-search',
+            locale: 'en-US'
+        };
+
+        let searchTimeout;
+
+        // DOM Elements
+        const modalElements = {
+            modal: null,
+            overlay: null,
+            closeButton: null,
+            searchInput: null,
+            searchButton: null,
+            getHelpBtn: null,
+            heroSearchInput: null,
+            heroSearchButton: null,
+            loading: null,
+            error: null,
+            retryButton: null,
+            resultsContainer: null
+        };
+
+        // Load Maven Widget Script
+        (function loadMavenWidget() {
+            const script = document.createElement('script');
+            script.src = 'https://instant-answers.onmaven.app/js/widget.js';
+            script.async = true;
+
+            script.onload = function() {
+                console.log('Maven AGI widget loaded');
+                initializeMavenWidget();
+            };
+
+            script.onerror = function() {
+                console.error('Failed to load Maven widget');
+                window.mavenWidgetLoadFailed = true;
+            };
+
+            document.head.appendChild(script);
+        })();
+
+        // Initialize Maven Widget
+        function initializeMavenWidget() {
+            if (!window.Maven || !window.Maven.InstantAnswersWidget) {
+                setTimeout(initializeMavenWidget, 100);
+                return;
+            }
+
+            try {
+                window.Maven.InstantAnswersWidget.init(MAVEN_CONFIG);
+                console.log('Maven AGI widget initialized');
+                if (window.mavenWidgetReady) {
+                    window.mavenWidgetReady();
+                }
+            } catch (error) {
+                console.error('Error initializing Maven widget:', error);
+                window.mavenWidgetLoadFailed = true;
+            }
+        }
+
+        // Initialize modal after DOM is loaded
+        function initializeMavenModal() {
+            // Get all DOM references
+            modalElements.modal = document.getElementById('maven-modal');
+            modalElements.overlay = modalElements.modal.querySelector('.maven-modal-overlay');
+            modalElements.closeButton = modalElements.modal.querySelector('.maven-modal-close');
+            modalElements.searchInput = document.getElementById('maven-modal-search-input');
+            modalElements.searchButton = modalElements.modal.querySelector('.maven-modal-search-button');
+            modalElements.getHelpBtn = document.getElementById('get-help-btn');
+            modalElements.heroSearchInput = document.getElementById('kikko-search-input');
+            modalElements.heroSearchButton = document.querySelector('.search-icon-button');
+            modalElements.loading = document.getElementById('maven-loading');
+            modalElements.error = document.getElementById('maven-error');
+            modalElements.retryButton = modalElements.modal.querySelector('.maven-retry-button');
+            modalElements.resultsContainer = document.getElementById('maven-instant-answers-container');
+
+            // Attach event listeners
+            attachMavenEventListeners();
+        }
+
+        // Modal Control Functions
+        function openModal(query = '') {
+            if (!modalElements.modal) return;
+
+            modalElements.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Set query if provided
+            if (query) {
+                modalElements.searchInput.value = query;
+            }
+
+            // Focus search input
+            setTimeout(() => {
+                modalElements.searchInput.focus();
+                // Auto-search if query provided
+                if (query) {
+                    performMavenSearch(query);
+                }
+            }, 100);
+        }
+
+        function closeModal() {
+            if (!modalElements.modal) return;
+
+            modalElements.modal.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Clear inputs
+            modalElements.searchInput.value = '';
+            if (modalElements.heroSearchInput) {
+                modalElements.heroSearchInput.value = '';
+            }
+
+            // Hide loading and error states
+            hideMavenLoading();
+            hideMavenError();
+
+            // Clear results
+            if (modalElements.resultsContainer) {
+                modalElements.resultsContainer.innerHTML = '';
+            }
+        }
+
+        // Search Function
+        function performMavenSearch(query) {
+            if (!query || !query.trim()) {
+                return;
+            }
+
+            // Check if widget is loaded
+            if (window.mavenWidgetLoadFailed) {
+                showMavenError();
+                return;
+            }
+
+            if (!window.Maven || !window.Maven.InstantAnswersWidget) {
+                showMavenError();
+                return;
+            }
+
+            // Show loading state
+            showMavenLoading();
+            hideMavenError();
+
+            // Clear any existing timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+
+            // Set timeout for search (15 seconds)
+            searchTimeout = setTimeout(() => {
+                hideMavenLoading();
+                showMavenError();
+            }, 15000);
+
+            try {
+                // Perform search using Maven widget
+                window.Maven.InstantAnswersWidget.search({
+                    query: query.trim(),
+                    selector: '#maven-instant-answers-container'
+                });
+
+                // Hide loading after a short delay
+                setTimeout(() => {
+                    hideMavenLoading();
+                    if (searchTimeout) {
+                        clearTimeout(searchTimeout);
+                    }
+                }, 1000);
+
+            } catch (error) {
+                console.error('Search error:', error);
+                hideMavenLoading();
+                showMavenError();
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+            }
+        }
+
+        // State Functions
+        function showMavenLoading() {
+            if (modalElements.loading) {
+                modalElements.loading.style.display = 'flex';
+            }
+            if (modalElements.resultsContainer) {
+                modalElements.resultsContainer.style.display = 'none';
+            }
+        }
+
+        function hideMavenLoading() {
+            if (modalElements.loading) {
+                modalElements.loading.style.display = 'none';
+            }
+            if (modalElements.resultsContainer) {
+                modalElements.resultsContainer.style.display = 'block';
+            }
+        }
+
+        function showMavenError() {
+            if (modalElements.error) {
+                modalElements.error.style.display = 'flex';
+            }
+            if (modalElements.resultsContainer) {
+                modalElements.resultsContainer.style.display = 'none';
+            }
+        }
+
+        function hideMavenError() {
+            if (modalElements.error) {
+                modalElements.error.style.display = 'none';
+            }
+        }
+
+        // Event Listeners
+        function attachMavenEventListeners() {
+            // Hero search input - open modal on focus
+            if (modalElements.heroSearchInput) {
+                modalElements.heroSearchInput.addEventListener('focus', () => {
+                    const query = modalElements.heroSearchInput.value;
+                    openModal(query);
+                });
+
+                // Hero search input - open modal on Enter key
+                modalElements.heroSearchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const query = modalElements.heroSearchInput.value;
+                        openModal(query);
+                        if (query) {
+                            performMavenSearch(query);
+                        }
+                    }
+                });
+            }
+
+            // Hero search button - open modal on click
+            if (modalElements.heroSearchButton) {
+                modalElements.heroSearchButton.addEventListener('click', () => {
+                    const query = modalElements.heroSearchInput.value;
+                    openModal(query);
+                    if (query) {
+                        performMavenSearch(query);
+                    }
+                });
+            }
+
+            // Get Help button - open modal
+            if (modalElements.getHelpBtn) {
+                modalElements.getHelpBtn.addEventListener('click', () => {
+                    openModal();
+                });
+            }
+
+            // Modal search input - perform search on Enter key
+            if (modalElements.searchInput) {
+                modalElements.searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const query = modalElements.searchInput.value;
+                        performMavenSearch(query);
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeModal();
+                    }
+                });
+            }
+
+            // Modal search button - perform search on click
+            if (modalElements.searchButton) {
+                modalElements.searchButton.addEventListener('click', () => {
+                    const query = modalElements.searchInput.value;
+                    performMavenSearch(query);
+                });
+            }
+
+            // Modal close button
+            if (modalElements.closeButton) {
+                modalElements.closeButton.addEventListener('click', closeModal);
+            }
+
+            // Modal overlay - close on click
+            if (modalElements.overlay) {
+                modalElements.overlay.addEventListener('click', closeModal);
+            }
+
+            // Retry button
+            if (modalElements.retryButton) {
+                modalElements.retryButton.addEventListener('click', () => {
+                    const query = modalElements.searchInput.value;
+                    if (query) {
+                        performMavenSearch(query);
+                    }
+                });
+            }
+
+            // Global ESC key to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalElements.modal && modalElements.modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Widget ready callback
+        window.mavenWidgetReady = function() {
+            console.log('Maven widget is ready for searches');
+        };
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
